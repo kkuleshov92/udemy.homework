@@ -77,11 +77,13 @@ appData = {
         
         appData.income.forEach( function(item, i){
             console.log('Способы доп. заработка: ' + (i + 1) + ' ' + item);
-        })
+        });
     }
+};
+
+for (let key in appData) {
+    console.log('Наша программа включает в себя данные: ' + key + ' - ' + appData[key]);
 }
-
-
 
 
 
