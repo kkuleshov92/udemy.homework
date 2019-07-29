@@ -38,7 +38,7 @@ window.addEventListener('DOMContentLoaded', function(){
     });
 
     //Timer
-    let deadLine = '2018-07-27T00:00:00';
+    let deadLine = '2019-07-27T00:00:00';
 
     function getTimeRemaining(endTime) {
         let t = Date.parse(endTime) - Date.parse(new Date()),
@@ -54,43 +54,78 @@ window.addEventListener('DOMContentLoaded', function(){
         };
     }
 
-    function setClock(id, endTime) {
+    function setClock(id, endtime) {
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
-            seconds = timer.querySelector('.seconds');
-
-        if (Date.parse(endTime) < Date.parse(new Date())) {
-            hours.textContent = '00';
-            minutes.textContent = '00';
-            seconds.textContent = '00';
-            return false;
-        }
-
-        let timeInterval = setInterval(updateClock, 1000);
-
-        
-
+            seconds = timer.querySelector('.seconds'),
+            timeInterval = setInterval(updateClock, 1000);
+            
         function updateClock() {
-            let t = getTimeRemaining(endTime);
-            hours.textContent = t.hours;
-            if (hours.textContent.length < 2) {
-                hours.textContent = '0' + hours.textContent;
-            }
-            minutes.textContent = t.minutes;
-            if (minutes.textContent.length < 2) {
-                minutes.textContent = '0' + minutes.textContent;
-            }
-            seconds.textContent = t.seconds;
-            if (seconds.textContent.length < 2) {
-                seconds.textContent = '0' + seconds.textContent;
-            }
+            let t = getTimeRemaining(endtime);
 
-            if(t.total < 0) {
+            function addZero(num){
+                if(num <= 9) {
+                    return '0' + num;
+                } else return num;
+            };
+
+            hours.textContent = addZero(t.hours);
+            minutes.textContent = addZero(t.minutes);
+            seconds.textContent = addZero(t.seconds);
+
+            if (t.total <= 0) {
                 clearInterval(timeInterval);
+                hours.textContent = '00';
+                minutes.textContent = '00';
+                seconds.textContent = '00';
             }
         }
+
     }
 
     setClock('timer', deadLine);
+
+
+    //Modal
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close'),
+        tabsMore = document.querySelectorAll('.description-btn'),
+        openOverlay = function() {
+            overlay.style.display = 'block';
+            this.classList.add('more-splash');
+            document.body.style.overflow = 'hidden';
+        };
+
+    more.addEventListener('click', openOverlay);
+    
+    document.addEventListener('click', function(event) {
+        let target = event.target;
+
+        if (target.classList.contains('description-btn')) {
+            for (let i = 0; i < tabsMore.length; i++) {
+                if (target == tabsMore[i]) {
+                    overlay.style.display = 'block';
+                    tabsMore[i].classList.add('more-splash');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+    });
+
+
+    close.addEventListener('click', function() {
+        overlay.style.display = 'none';
+        more.classList.remove('.more-splash');
+        
+        for (let i = 0; i < tabsMore.length; i++) {
+            tabsMore[i].classList.remove('more-splash');
+        }
+
+        document.body.style.overflow = '';
+    });
+
+
 });
