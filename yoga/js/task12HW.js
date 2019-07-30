@@ -12,11 +12,8 @@ class Option {
         
         newDiv.textContent = 'Hello, I\'m new div';
 
-        newDiv.style.height = this.height + 'px';
-        newDiv.style.width = this.width + 'px';
-        newDiv.style.bg = this.bg;
-        newDiv.style.fontSize = this.fontSize + 'px';
-        newDiv.style.textAlign = this.textAlign;
+        newDiv.style.cssText = `height: ${this.height}px; width: ${this.width}px; background: ${this.bg}; text-align: ${this.textAlign}; font-size: ${this.fontSize}px;`;
+
 
         document.body.insertAdjacentElement('beforeend', newDiv);
     }
